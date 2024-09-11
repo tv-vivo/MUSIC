@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V-AURAX MUSIC</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons/css/boxicons.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .header img {
+            width: 150px; /* Ajusta el tamaño según tus necesidades */
+            height: auto;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .search-container {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .search-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333333;
+            border: 2px solid #9c27b0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            background-color: transparent;
+            color: #e0e0e0;
+            outline: none;
+        }
+        .search-box input:focus {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+        .playlist {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .song {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333333;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+        .song.playing {
+            border: 2px solid #9c27b0;
+            transform: scale(1.02);
+        }
+        .song:hover {
+            background-color: #444444;
+            transform: scale(1.01);
+        }
+        .song img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+        .song-info {
+            flex: 1;
+        }
+        .song-info h3 {
+            margin: 0;
+            font-size: 1em;
+            color: #e0e0e0;
+        }
+        .song-info p {
+            margin: 2px 0 0;
+            font-size: 0.85em;
+            color: #b0b0b0;
+        }
+        .play-button {
+            background-color: #9c27b0;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1.3em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .play-button:hover {
+            background-color: #ab47bc;
+        }
+        .control-panel {
+            background-color: #1e1e1e;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        .control-buttons button {
+            background-color: #9c27b0;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1.3em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .control-buttons button:hover {
+            background-color: #ab47bc;
+        }
+        .progress-container {
+            width: 90%;
+            height: 6px;
+            background-color: #444444;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #9c27b0;
+            border-radius: 5px;
+            width: 0;
+        }
+        .fullscreen-panel {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            color: #e0e0e0;
+            text-align: center;
+        }
+        .fullscreen-panel img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 5px solid #9c27b0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+        }
+        .fullscreen-info {
+            margin-bottom: 15px;
+        }
+        .fullscreen-info h2, .fullscreen-info p {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .fullscreen-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .fullscreen-controls .control-buttons {
+            gap: 15px;
+        }
+        .fullscreen-progress-container {
+            width: 90%;
+            height: 6px;
+            background-color: #444444;
+            border-radius: 5px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .fullscreen-progress-bar {
+            height: 100%;
+            background-color: #9c27b0;
+            border-radius: 5px;
+            width: 0;
+        }
+        .playing-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #9c27b0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <img src="https://tv-vivo.github.io/MUSIC/img/logo.png" alt="Logo V-AURA MUSIC">
+        </div>
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar por título..." oninput="searchSongs()">
+            </div>
+        </div>
+        <div class="playlist" id="playlist">
+            <!-- Las canciones se cargarán aquí dinámicamente -->
+        </div>
+    </div>
+
+    <div class="control-panel">
+        <div class="control-buttons">
+            <button onclick="previousSong(event)"><i class='bx bx-chevron-left'></i></button>
+            <button onclick="playPauseSong(event)"><i id="playPauseIcon" class='bx bx-play'></i></button>
+            <button onclick="nextSong(event)"><i class='bx bx-chevron-right'></i></button>
+            <button onclick="toggleFullscreen()"><i class='bx bx-fullscreen'></i></button>
+        </div>
+        <div class="progress-container" onclick="seek(event)">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+    </div>
+
+    <div class="fullscreen-panel" id="fullscreenPanel">
+        <img id="fullscreenImage" src="" alt="Album Cover">
+        <div class="fullscreen-info">
+            <h2 id="fullscreenTitle">Título de la Canción</h2>
+            <p id="fullscreenArtist">Autor de la Canción</p>
+        </div>
+        <div class="fullscreen-controls">
+            <div class="control-buttons">
+                <button onclick="previousSong(event)"><i class='bx bx-chevron-left'></i></button>
+                <button onclick="playPauseSong(event)"><i id="fullscreenPlayPauseIcon" class='bx bx-play'></i></button>
+                <button onclick="nextSong(event)"><i class='bx bx-chevron-right'></i></button>
+                <button onclick="toggleFullscreen()"><i class='bx bx-exit-fullscreen'></i></button>
+            </div>
+            <div class="fullscreen-progress-container" onclick="seekFullscreen(event)">
+                <div id="fullscreenProgressBar" class="fullscreen-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" controls style="display:none;"></audio>
+    <script src="https://tv-vivo.github.io/MUSIC/config.js"></script>
+    <script>
+        let currentSongIndex = 0;
+        let wasPlayingBeforePause = false;
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playlist = document.getElementById('playlist');
+        const progressBar = document.getElementById('progressBar');
+        const fullscreenPanel = document.getElementById('fullscreenPanel');
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        const fullscreenTitle = document.getElementById('fullscreenTitle');
+        const fullscreenArtist = document.getElementById('fullscreenArtist');
+        const fullscreenProgressBar = document.getElementById('fullscreenProgressBar');
+        const playPauseIcon = document.getElementById('playPauseIcon');
+        const fullscreenPlayPauseIcon = document.getElementById('fullscreenPlayPauseIcon');
+        const searchInput = document.getElementById('searchInput');
+
+        function loadPlaylist() {
+            playlist.innerHTML = '';
+            canciones.forEach((cancion, index) => {
+                const songElement = document.createElement('div');
+                songElement.className = 'song';
+                songElement.dataset.index = index;
+                songElement.innerHTML = `
+                    <img src="${cancion.img}" alt="${cancion.titulo}">
+                    <div class="song-info">
+                        <h3>${cancion.titulo}</h3>
+                        <p>${cancion.autor}</p>
+                    </div>
+                    <button class="play-button" onclick="playSong(${index}, event)"><i class='bx bx-play'></i></button>
+                `;
+                playlist.appendChild(songElement);
+            });
+        }
+
+        function playSong(index, event) {
+            event.stopPropagation();
+            currentSongIndex = index;
+            const cancion = canciones[index];
+            audioPlayer.src = cancion.url;
+            audioPlayer.play();
+            updateUI();
+        }
+
+        function updateUI() {
+            const songs = document.querySelectorAll('.song');
+            songs.forEach(song => song.classList.remove('playing'));
+            if (songs[currentSongIndex]) {
+                songs[currentSongIndex].classList.add('playing');
+            }
+            playPauseIcon.className = 'bx bx-pause';
+            fullscreenPlayPauseIcon.className = 'bx bx-pause';
+            updateProgressBar();
+        }
+
+        function playPauseSong(event) {
+            event.stopPropagation();
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playPauseIcon.className = 'bx bx-pause';
+                fullscreenPlayPauseIcon.className = 'bx bx-pause';
+                if (wasPlayingBeforePause) {
+                    wasPlayingBeforePause = false;
+                    return;
+                }
+            } else {
+                audioPlayer.pause();
+                playPauseIcon.className = 'bx bx-play';
+                fullscreenPlayPauseIcon.className = 'bx bx-play';
+                wasPlayingBeforePause = true;
+            }
+        }
+
+        function nextSong(event) {
+            event.stopPropagation();
+            currentSongIndex = (currentSongIndex + 1) % canciones.length;
+            playSong(currentSongIndex, event);
+        }
+
+        function previousSong(event) {
+            event.stopPropagation();
+            currentSongIndex = (currentSongIndex - 1 + canciones.length) % canciones.length;
+            playSong(currentSongIndex, event);
+        }
+
+        function seek(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            const offsetX = event.clientX - rect.left;
+            const percentage = offsetX / rect.width;
+            const newTime = percentage * audioPlayer.duration;
+            audioPlayer.currentTime = newTime;
+            updateProgressBar();
+        }
+
+        function seekFullscreen(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            const offsetX = event.clientX - rect.left;
+            const percentage = offsetX / rect.width;
+            const newTime = percentage * audioPlayer.duration;
+            audioPlayer.currentTime = newTime;
+            updateFullscreenProgressBar();
+        }
+
+        function updateProgressBar() {
+            const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressBar.style.width = `${percentage}%`;
+            updateFullscreenProgressBar();
+        }
+
+        function updateFullscreenProgressBar() {
+            const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            fullscreenProgressBar.style.width = `${percentage}%`;
+        }
+
+        let updateInterval;
+
+        function toggleFullscreen() {
+            if (fullscreenPanel.style.display === 'flex') {
+                fullscreenPanel.style.display = 'none';
+                document.exitFullscreen();
+                clearInterval(updateInterval);
+            } else {
+                fullscreenPanel.style.display = 'flex';
+                fullscreenImage.src = canciones[currentSongIndex].img;
+                fullscreenTitle.textContent = canciones[currentSongIndex].titulo;
+                fullscreenArtist.textContent = canciones[currentSongIndex].autor;
+                document.documentElement.requestFullscreen();
+                updateInterval = setInterval(() => {
+                    fullscreenImage.src = canciones[currentSongIndex].img;
+                    fullscreenTitle.textContent = canciones[currentSongIndex].titulo;
+                    fullscreenArtist.textContent = canciones[currentSongIndex].autor;
+                }, 500);
+            }
+        }
+
+        function searchSongs() {
+            const query = searchInput.value.toLowerCase();
+            const songs = document.querySelectorAll('.song');
+            songs.forEach(song => {
+                const title = song.querySelector('h3').textContent.toLowerCase();
+                song.style.display = title.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        audioPlayer.addEventListener('timeupdate', updateProgressBar);
+        audioPlayer.addEventListener('ended', () => {
+            nextSong();
+            if (fullscreenPanel.style.display === 'flex') {
+                fullscreenImage.src = canciones[currentSongIndex].img;
+                fullscreenTitle.textContent = canciones[currentSongIndex].titulo;
+                fullscreenArtist.textContent = canciones[currentSongIndex].autor;
+            }
+        });
+
+        window.addEventListener('resize', updateProgressBar);
+
+        loadPlaylist();
+    </script>
+</body>
+</html>
