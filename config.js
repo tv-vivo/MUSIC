@@ -21,7 +21,7 @@ const canciones = [
             titulo: "CESSATION REMAKE",
             img: "https://tv-vivo.github.io/MUSIC/img/1.jpg",
             autor: "V-Aurax",
-            url: "https://tv-vivo.github.io/MUSIC/download/1.acc"
+            url: "https://tv-vivo.github.io/MUSIC/download/1.aac"
         },
         // Agrega más canciones aquí si es necesario
     ];
