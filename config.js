@@ -23,11 +23,18 @@ const canciones = [
             autor: "V-Aurax",
             url: "https://tv-vivo.github.io/MUSIC/download/1.aac"
         },
+
         {
             titulo: "BEYOND THE BASS",
             img: "https://tv-vivo.github.io/MUSIC/img/2.jpg",
             autor: "V-Aurax",
             url: "https://tv-vivo.github.io/MUSIC/download/2.aac"
+        },
+        {
+            titulo: "CINDER STORM",
+            img: "https://tv-vivo.github.io/MUSIC/img/3.jpg",
+            autor: "V-Aurax",
+            url: "https://tv-vivo.github.io/MUSIC/download/3.aac"
         },
         // Agrega más canciones aquí si es necesario
     ];
