@@ -17,5 +17,11 @@ const canciones = [
             autor: "V-Aurax",
             url: "https://tv-vivo.github.io/MUSIC/download/campanas.m4a"
         },
+        {
+            titulo: "CESSATION REMAKE",
+            img: "https://tv-vivo.github.io/MUSIC/img/1.jpg",
+            autor: "V-Aurax",
+            url: "https://tv-vivo.github.io/MUSIC/download/1.acc"
+        },
         // Agrega más canciones aquí si es necesario
     ];
