@@ -11,5 +11,11 @@ const canciones = [
             autor: "V-Aura",
             url: "https://tv-vivo.github.io/MUSIC/download/electroritmo.aac"
         },
+        {
+            titulo: "CAMPANAS DE LA NOCHE",
+            img: "https://tv-vivo.github.io/MUSIC/img/campanas.jpg",
+            autor: "V-Aura",
+            url: "https://tv-vivo.github.io/MUSIC/download/campanas.m4a"
+        },
         // Agrega más canciones aquí si es necesario
     ];
